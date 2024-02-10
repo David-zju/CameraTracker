@@ -25,7 +25,7 @@ void allocateGPS(GPXDataBuffer& data, const std::filesystem::path& searchPath) {
                 std::pair<double, double> loc;
                 if(readImageTime(image, "+08:00", false, t)) std::cerr << filePath << std::endl;
                 data.getGPXPoint(t, loc);
-                // writePhotoGPS(image, loc);
+                writePhotoGPS(image, loc);
             }
         }
     }

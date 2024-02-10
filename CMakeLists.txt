@@ -23,6 +23,5 @@ file(GLOB CPP_SOURCES *.cpp)
 
 
 # 添加所有的 .cpp 文件到可执行文件
-add_executable(main main.cpp)
-target_link_libraries(main PRIVATE Exiv2::exiv2lib ${EXPAT_LIBRARIES})
-# target_link_libraries(main )
+add_executable(CameraTracker main.cpp)
+target_link_libraries(CameraTracker PRIVATE Exiv2::exiv2lib ${EXPAT_LIBRARIES})
