@@ -1,5 +1,5 @@
 #include "gpx_reader.h"
-void allocateGPS(GPXDataBuffer& data, const std::filesystem::path& searchPath) {
+void allocateGPS(GPXDataBuffer& data, const std::filesystem::path& searchPath, std::string timezone) {
     using namespace Exiv2;
     if (!std::filesystem::exists(searchPath) || !std::filesystem::is_directory(searchPath)) {
         std::cerr << "[ERROR] Specified path is not a valid directory." << std::endl;
@@ -23,7 +23,7 @@ void allocateGPS(GPXDataBuffer& data, const std::filesystem::path& searchPath) {
                 }
                 std::chrono::system_clock::time_point t;
                 std::pair<double, double> loc;
-                if(readImageTime(image, "+08:00", false, t)) std::cerr << filePath << std::endl;
+                if(readImageTime(image, timezone, false, t)) std::cerr << filePath << std::endl;
                 data.getGPXPoint(t, loc);
                 writePhotoGPS(image, loc);
             }
@@ -31,9 +31,30 @@ void allocateGPS(GPXDataBuffer& data, const std::filesystem::path& searchPath) {
     }
 }
 
-int main(){
+int main(int argc, char* argv[]){
+    std::map<std::string, std::string> args;
+    for (int i = 0; i < argc; i ++) {
+        if (!strncmp(argv[i], "-", 1)) {
+            auto key = argv[i] + 1;
+            auto val = "";
+            if (i + 1 < argc && strncmp(argv[i + 1], "-", 1)) {
+                val = argv[i + 1];
+                i ++;
+            }
+            args[key] = val;
+        }
+    }
+
     std::string patternStr = ".";
     std::string searchPath = ".";
+    std::string timezone = "+08:00"; // Beijing Timezone
+
+    if(args.count("p")){
+        searchPath = args["p"];
+    }
+    if(args.count("tz")){
+        timezone = args["p"];
+    }
     GPXDataBuffer data;
     for (const auto& entry : std::filesystem::recursive_directory_iterator(searchPath)){
         if (entry.is_regular_file()) {
@@ -47,6 +68,6 @@ int main(){
         }
     }
     std::cout << "[INFO] Finish parsing gpx files" << std::endl;
-    allocateGPS(data, searchPath);
+    allocateGPS(data, searchPath, timezone);
     return 0;
 }

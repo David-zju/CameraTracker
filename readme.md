@@ -8,7 +8,7 @@
 https://github.com/mendhak/gpslogger
 通过对齐gpx文件和照片的拍摄时间，将gpx文件中的gps信息添加到照片的exif信息中。
 
-⚠️注意 目前由于Exiv2对部分RAW格式图片的exif信息修改后会导致图片本身损坏，因此目前暂时只支持JPEG格式的照片。
+⚠️注意 由于Exiv2库对部分RAW格式图片的exif信息修改后会导致图片本身损坏，因此目前暂时只支持JPEG格式的照片。
 
 ## 依赖
 - Exiv2
@@ -20,18 +20,23 @@ https://github.com/mendhak/gpslogger
 cmake ..
 make
 ```
-使用时需要将build文件夹下的CameraTracker可执行文件添加到目录
+使用时需要将待处理的所有照片和gpx文件放在一个文件夹下，然后在终端中打开该目录。将编译好的CameraTracker可执行文件添加到目录
 ```shell
 export PATH="$PATH:/path/to/your/program"
 ```
-将待处理的所有照片和gpx文件放在一个文件夹下，然后执行
+然后执行
+```shell
+CameraTracker -tz +08:00 // +08:00表示东八区，北京时间
 ```
-CameraTracker
+也可以增加参数`-p`来选择要处理的文件夹
+```shell
+CameraTracker -p /path/to/your/folder -tz +08:00
 ```
+⚠️注意 CameraTracker会递归地寻找照片和gpx文件，因此子文件夹中的文件也会被处理。
 
 ## TODO
 - [ ] 文件筛选
-- [ ] 手动设置时区
+- [x] 手动设置时区
 
 ## Bug fixes
 - [x] 排除读取MacOS下`.file`隐藏文件
