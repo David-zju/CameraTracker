@@ -137,8 +137,8 @@ class GPXDataBuffer{
             if(photoTime > points.back().time_point || photoTime < points.front().time_point){
                 std::time_t t_c = std::chrono::system_clock::to_time_t(photoTime);
                 std::tm tm_c = *std::localtime(&t_c);
-                std::cerr << "[Warning] photo shot time " << std::put_time(&tm_c, "%Y-%m-%d %H:%M:%S") <<" is not recorded in gpx file"<< std::endl;
-                std::cerr << "[Warning] recorded time range: " << points.front().timeStr << " -- " << points.back().timeStr << std::endl;
+                std::cerr << "[WARNING] photo shot time " << std::put_time(&tm_c, "%Y-%m-%d %H:%M:%S") <<" is not recorded in gpx file"<< std::endl;
+                std::cerr << "[WARNING] recorded utc time range: " << points.front().timeStr << " -- " << points.back().timeStr << std::endl;
                 return;
             }
             for(size_t i = 1; i < points.size(); ++i){
@@ -155,8 +155,8 @@ class GPXDataBuffer{
             if(!processed){
                 std::time_t t_c = std::chrono::system_clock::to_time_t(photoTime);
                 std::tm tm_c = *std::localtime(&t_c);
-                std::cerr << "[Waring] photo shot time " << std::put_time(&tm_c, "%Y-%m-%d %H:%M:%S") <<" is not recorded in gpx file"<< std::endl;
-                std::cerr << "[Waring] recorded time range: " << points.front().timeStr << " -- " << points.back().timeStr << std::endl;
+                std::cerr << "[WARNING] photo shot time " << std::put_time(&tm_c, "%Y-%m-%d %H:%M:%S") <<" is not recorded in gpx file"<< std::endl;
+                std::cerr << "[WARNING] recorded utc time range: " << points.front().timeStr << " -- " << points.back().timeStr << std::endl;
             }
             return;
         }
