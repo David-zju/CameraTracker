@@ -4,3 +4,4 @@
 *.gpx
 *.txt
 .vscode
+.DS_Store

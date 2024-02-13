@@ -141,12 +141,12 @@ class GPXDataBuffer{
                 std::cerr << "[Warning] recorded time range: " << points.front().timeStr << " -- " << points.back().timeStr << std::endl;
                 return;
             }
-            for(size_t i = 0; i < points.size(); ++i){
-                if(points[i].time_point > photoTime){
-                    std::chrono::duration du2 = points[i].time_point - photoTime;
-                    std::chrono::duration du1 = photoTime - points[i-1].time_point;
-                    double param1 = du2 / (du1 + du2);
-                    double param2 = du1 / (du1 + du2);
+            for(size_t i = 1; i < points.size(); ++i){
+                if(points[i].time_point > photoTime && points[i-1].time_point < photoTime){
+                    std::chrono::duration<double> du2 = points[i].time_point - photoTime;
+                    std::chrono::duration<double> du1 = photoTime - points[i-1].time_point;
+                    double param1 = du2.count() / (du1.count() + du2.count());
+                    double param2 = du1.count() / (du1.count() + du2.count());
                     location.first = points[i-1].lat * param1 + points[i].lat * param2;
                     location.second = points[i-1].lon * param1 + points[i].lon * param2;
                     processed = true;
@@ -291,6 +291,7 @@ void XMLCALL characterDataHandler(void *userData, const XML_Char *s, int len) {
 
 void parseGPX(const std::string filename, GPXDataBuffer& data) {
     // 创建一个XML解析器
+    std::cout << "[INFO] Parse gpx file: " << filename << std::endl;
     XML_Parser parser = XML_ParserCreate(NULL);
     if (!parser) {
         std::cerr << "[ERROR] cannot create xml parser" << std::endl;

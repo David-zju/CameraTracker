@@ -8,6 +8,8 @@
 https://github.com/mendhak/gpslogger
 通过对齐gpx文件和照片的拍摄时间，将gpx文件中的gps信息添加到照片的exif信息中。
 
+⚠️注意 目前由于Exiv2对部分RAW格式图片的exif信息修改后会导致图片本身损坏，因此目前暂时只支持JPEG格式的照片。
+
 ## 依赖
 - Exiv2
 - expat
@@ -30,3 +32,7 @@ CameraTracker
 ## TODO
 - [ ] 文件筛选
 - [ ] 手动设置时区
+
+## Bug fixes
+- [x] 排除读取MacOS下`.file`隐藏文件
+  - 由于Finder会产生.DS_Store文件，以及一些其他的缓存文件，详细可以参考https://cn.bandisoft.com/kb/resource-fork-file/

@@ -11,7 +11,7 @@ void allocateGPS(GPXDataBuffer& data, const std::filesystem::path& searchPath) {
             std::string filePath = entry.path().string();
             std::string fileName = entry.path().filename().string();
             std::string extension = entry.path().extension().string();
-
+            if(fileName[0] == '.') continue; // ignore the hidden files
             // 使用正则表达式匹配文件名
             if (isSupported(extension)) {
                 std::cout << "[INFO] Process file: " << filePath << std::endl;
@@ -40,12 +40,13 @@ int main(){
             std::string filePath = entry.path().string();
             std::string fileName = entry.path().filename().string();
             std::string extension = entry.path().extension().string();
+            if (fileName[0] == '.') continue; // ignore the hidden files
             if(extension == ".gpx"){
                 parseGPX(filePath,data);
             }
         }
     }
-    
+    std::cout << "[INFO] Finish parsing gpx files" << std::endl;
     allocateGPS(data, searchPath);
     return 0;
 }
